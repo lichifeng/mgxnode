@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/cmake,node,c++,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=cmake,node,c++,python
 
+.vscode/
+include/*
+package-lock.json
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -351,3 +355,4 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake,node,c++,python
+package-lock.json

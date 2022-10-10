@@ -1,15 +1,15 @@
 {
-  "name": "build-node-addon-api-with-cmake",
-  "version": "0.0.0",
-  "description": "Build Node-API native addon with CMake and node-addon-api C++ wrapper.",
-  "main": "hello.js",
+  "name": "mgxnode",
+  "version": "0.1.0",
+  "description": "A node.js addon for parsing Age of Empires II record based on MgxParser.",
+  "main": "mgxnode.js",
   "private": true,
   "dependencies": {
     "bindings": "~1.2.1",
     "node-addon-api": "^1.0.0"
   },
   "scripts": {
-    "install": "cmake-js compile",
-    "test": "node hello.js"
+    "install": "cmake-js --prefer-clang -p 10 compile",
+    "test": "node mgxnode.js"
   }
 }

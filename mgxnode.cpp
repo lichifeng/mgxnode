@@ -1,4 +1,5 @@
 #include <napi.h>
+#include "MgxParser.h"
 
 
 static Napi::String Method(const Napi::CallbackInfo& info) {
@@ -6,17 +7,19 @@ static Napi::String Method(const Napi::CallbackInfo& info) {
   // We will need this env when we want to create any new objects inside of the node.js environment
   Napi::Env env = info.Env();
   
-  // Create a C++ level variable
-  std::string helloWorld = "Hello, world!";
+  // Retrieve input filename
+  std::string recfile = info[0].IsString() ? info[0].ToString().Utf8Value() : "-";
+
+  std::string retval = MgxParser::parse(recfile);
   
   // Return a new javascript string that we copy-construct inside of the node.js environment
-  return Napi::String::New(env, helloWorld);
+  return Napi::String::New(env, retval);
 }
 
 static Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  exports.Set(Napi::String::New(env, "hello"),
+  exports.Set(Napi::String::New(env, "parse"),
               Napi::Function::New(env, Method));
   return exports;
 }
 
-NODE_API_MODULE(hello, Init)
+NODE_API_MODULE(mgxnode, Init)
