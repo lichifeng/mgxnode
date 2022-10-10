@@ -1,0 +1,3 @@
+[submodule "libs/MgxParser"]
+	path = libs/MgxParser
+	url = https://e.coding.net/lichifeng/mgxparser/MgxParser.git
