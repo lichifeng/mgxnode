@@ -1,3 +1,4 @@
-var rec = require('bindings')('mgxnode');
+var mgxnode = require('bindings')('mgxnode');
 
-console.log(rec.parse("DE_test.aoe2record")); // 'world'
+var rec = JSON.parse(mgxnode.parse("DE_test.aoe2record"));
+console.log(rec); // 'world'

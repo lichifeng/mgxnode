@@ -3,15 +3,17 @@ set(CMAKE_CXX_STANDARD 17)
  
 project (mgxnode)
 
-# Main lib generate by this script
-aux_source_directory(./ ADDON_SRC)
-add_library(${PROJECT_NAME} SHARED ${ADDON_SRC} ${CMAKE_JS_SRC} $<TARGET_OBJECTS:MgxParser>)
+add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
 
 # Integrate MgxParser
 set(NODE_ADDON 1)
 set(MGXPARSER_DIR libs/MgxParser/)
 add_subdirectory(${MGXPARSER_DIR})
-file(COPY "${MGXPARSER_DIR}/src/include/MgxParser.h" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+#file(COPY "${MGXPARSER_DIR}/src/include/MgxParser.h" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+
+# Main lib generate by this script
+aux_source_directory(./ ADDON_SRC)
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:MgxParser> ${ADDON_SRC} ${CMAKE_JS_SRC})
 
 # Fix include issues in vscode(`node_api.h not found` issue)
 file(COPY "${CMAKE_JS_INC}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
