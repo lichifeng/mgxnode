@@ -13,11 +13,12 @@ add_subdirectory(${MGXPARSER_DIR})
 
 # Main lib generate by this script
 aux_source_directory(./ ADDON_SRC)
-add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:MgxParser> ${ADDON_SRC} ${CMAKE_JS_SRC})
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:MgxParser_OBJECT> ${ADDON_SRC} ${CMAKE_JS_SRC})
+target_link_libraries(${PROJECT_NAME} MgxParser_STATIC)
 
 # Fix include issues in vscode(`node_api.h not found` issue)
 file(COPY "${CMAKE_JS_INC}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/" ${MGXPARSER_INCLUDE})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})

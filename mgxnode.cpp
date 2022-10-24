@@ -8,15 +8,20 @@ static Napi::String Method(const Napi::CallbackInfo &info)
     Napi::Env env = info.Env();
 
     std::string retval;
+    int mapType;
+
+    if (info[1].IsNumber())
+        mapType = info[1].ToNumber();
+
     if (info[0].IsBuffer())
     {
-        Napi::Buffer<uint8_t> rawBuf =  info[0].As<Napi::Buffer<uint8_t>>();
-        retval = MgxParser::parse(rawBuf.Data(), rawBuf.ByteLength());
+        Napi::Buffer<uint8_t> rawBuf = info[0].As<Napi::Buffer<uint8_t>>();
+        retval = MgxParser::parse(rawBuf.Data(), rawBuf.ByteLength(), mapType);
     }
     else
     {
         std::string recfile = info[0].IsString() ? info[0].ToString().Utf8Value() : "-";
-        retval = MgxParser::parse(recfile);
+        retval = MgxParser::parse(recfile, mapType);
     }
 
     // Return a new javascript string that we copy-construct inside of the node.js environment
