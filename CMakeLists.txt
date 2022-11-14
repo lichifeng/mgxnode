@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 17)
  
 project (mgxnode)
@@ -8,17 +8,24 @@ add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
 # Integrate MgxParser
 set(NODE_ADDON 1)
 set(MGXPARSER_DIR libs/MgxParser/)
+set(MGXPARSER_LINK_TARGETS pthread png z "stdc++fs")
 add_subdirectory(${MGXPARSER_DIR})
 #file(COPY "${MGXPARSER_DIR}/src/include/MgxParser.h" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
 # Main lib generate by this script
-aux_source_directory(./ ADDON_SRC)
+aux_source_directory(./src ADDON_SRC)
 add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:MgxParser_OBJECT> ${ADDON_SRC} ${CMAKE_JS_SRC})
-target_link_libraries(${PROJECT_NAME} MgxParser_STATIC)
+target_link_libraries(${PROJECT_NAME} ${MGXPARSER_LINK_TARGETS})
 
 # Fix include issues in vscode(`node_api.h not found` issue)
 file(COPY "${CMAKE_JS_INC}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/" ${MGXPARSER_INCLUDE})
+target_include_directories(
+        ${PROJECT_NAME} PUBLIC 
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/" 
+        "${CMAKE_CURRENT_SOURCE_DIR}/libs/MgxParser/src/" 
+        "${MgxParser_BINARY_DIR}" 
+        "${MGXPARSER_INCLUDE}"
+        )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
