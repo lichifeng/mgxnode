@@ -17,7 +17,7 @@ static Napi::Object Method(const Napi::CallbackInfo &info) {
     } else {
         if (info[0].IsObject()) {
             config = info[0].As<Napi::Object>();
-        }else{
+        } else {
             config = Napi::Object::New(env);
         }
     }
@@ -31,6 +31,9 @@ static Napi::Object Method(const Napi::CallbackInfo &info) {
         } else if (config.Get("input").IsString()) {
             _.input_path = config.Get("input").ToString().Utf8Value();
         }
+    }
+    if (config.Has("filepath") && config.Get("filepath").IsString()) {
+        _.input_path = config.Get("filepath").ToString().Utf8Value();
     }
     if (config.Has("map") && config.Get("map").IsBoolean() && config.Get("map").ToBoolean().Value()) {
         if (config.Has("hd") && config.Get("hd").IsBoolean()) {
@@ -54,12 +57,31 @@ static Napi::Object Method(const Napi::CallbackInfo &info) {
     if (config.Has("body") && config.Get("body").IsString()) {
         _.body_path = config.Get("body").ToString().Utf8Value();
     }
+    if (config.Has("fullParse") && config.Get("fullParse").IsBoolean()) {
+        _.full_parse = config.Get("fullParse").ToBoolean().Value();
+    }
+    if (config.Has("md5") && config.Get("md5").IsBoolean()) {
+        _.md5 = config.Get("md5").ToBoolean().Value();
+    }
 
     // check if map buffer requested
     char *out_buffer = nullptr;
     std::size_t map_size = 0;
     if (_.map_type && _.map_name.empty()) {
         _.map_dest = open_memstream(&out_buffer, &map_size);
+    }
+
+    // check if need unzip
+    char *unzip_dest = nullptr;
+    std::size_t unzip_size = 0;
+    if (config.Has("unzip") && config.Get("unzip").IsString()) {
+        std::string unzip_type = config.Get("unzip").ToString().Utf8Value();
+        if ("buffer" == unzip_type) {
+            _.unzip_buffer = &unzip_dest;
+            _.unzip_size_ptr = &unzip_size;
+        } else {
+            _.unzip = unzip_type;
+        }
     }
 
     // do parsing
@@ -78,6 +100,15 @@ static Napi::Object Method(const Napi::CallbackInfo &info) {
                 free(b);
         });
         obj.Set("mapbuffer", map_buffer);
+    }
+
+    // populate unzip buffer if required
+    if (unzip_dest && unzip_size) {
+            auto unzip_buffer = Napi::Buffer<char>::New(env, unzip_dest, unzip_size, [](napi_env e, char *b) {
+                if (b)
+                    free(b);
+            });
+            obj.Set("unzipbuffer", unzip_buffer);
     }
 
     return obj;
