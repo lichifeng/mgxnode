@@ -1,6 +1,3 @@
-- write a test: test.js
-- write a new version of OO style usage
-
 ## usage
 ```js
 parse = require(...);

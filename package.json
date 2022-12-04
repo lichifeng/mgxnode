@@ -8,7 +8,7 @@
     "node-addon-api": "^1.0.0"
   },
   "scripts": {
-    "install": "cmake-js --prefer-clang -p 10 compile",
+    "install": "cmake-js --prefer-clang -p 10 build",
     "test": "node test.js"
   }
 }

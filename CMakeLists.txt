@@ -21,7 +21,8 @@ target_link_libraries(${PROJECT_NAME} ${MGXPARSER_LINK_TARGETS})
 file(COPY "${CMAKE_JS_INC}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 target_include_directories(
         ${PROJECT_NAME} PUBLIC 
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/" 
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/"  
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/node"
         "${CMAKE_CURRENT_SOURCE_DIR}/libs/MgxParser/src/" 
         "${MgxParser_BINARY_DIR}" 
         "${MGXPARSER_INCLUDE}"
