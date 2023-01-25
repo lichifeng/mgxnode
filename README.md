@@ -2,9 +2,18 @@
 linux only now
 
 ## Compile
-install node.js:
-https://github.com/nodesource/distributions/blob/master/README.md
-https://github.com/cmake-js/cmake-js/issues/257
+```sh
+sudo apt install snapd git libpng-dev doxygen graphviz clang
+sudo snap install node --classic
+sudo snap install cmake --classic
+npm i cmake-js -g
+npm install
+
+git clone https://e.coding.net/lichifeng/mgxparser/mgxnode.git --recursive
+```
+安装宝塔
+安装pm2 docker管理器
+
 
 ## usage
 ```js
@@ -21,3 +30,7 @@ var map_file_hd = rec.map("path/to/map.png", {witdh: 900, height: 450, hd: true}
 var [header_file, body_file] = rec.extract({header: 'header.dat', body: 'body.dat'});
 ```
 
+## others
+install node.js:
+https://github.com/nodesource/distributions/blob/master/README.md  
+https://github.com/cmake-js/cmake-js/issues/257
