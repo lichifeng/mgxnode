@@ -3,17 +3,15 @@ linux only now
 
 ## Compile
 ```sh
-sudo apt install snapd git libpng-dev doxygen graphviz clang
+sudo apt install snapd git libpng-dev doxygen graphviz clang make
 sudo snap install node --classic
 sudo snap install cmake --classic
-npm i cmake-js -g
-npm install
 
 git clone https://e.coding.net/lichifeng/mgxparser/mgxnode.git --recursive
+npm i cmake-js
+npm i cmake-js -g
+npm install
 ```
-安装宝塔
-安装pm2 docker管理器
-
 
 ## usage
 ```js

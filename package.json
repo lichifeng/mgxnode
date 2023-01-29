@@ -5,10 +5,11 @@
   "main": "mgxnode.js",
   "private": true,
   "dependencies": {
+    "cmake-js": "^7.1.1",
     "node-addon-api": "^1.0.0"
   },
   "scripts": {
-    "install": "cmake-js --prefer-clang -p 10 build",
+    "install": "cmake-js --prefer-clang -p 10 compile",
     "test": "node test.js"
   }
 }
